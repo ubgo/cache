@@ -50,6 +50,8 @@ go get github.com/ubgo/cache-mem   # or cache-redis, cache-pg, cache-tiered, ...
 
 Requires Go 1.24+.
 
+New here? The **[feature cookbook in `docs/`](./docs/README.md)** documents every exported feature one-by-one with real-world use cases and runnable snippets.
+
 ## Quick start
 
 ```go
@@ -522,6 +524,7 @@ The core module has zero third-party dependencies. Observability exporters and e
 
 ## Documentation
 
+- **[docs/](./docs/README.md) — feature cookbook**: every exported feature documented one-by-one with use cases and runnable snippets ([core ops](./docs/core-operations.md), [Remember](./docs/remember.md), [generics](./docs/generics.md), [codecs](./docs/codecs.md), [namespacing](./docs/namespacing.md), [locker](./docs/locker.md), [invalidation](./docs/invalidation.md), [observability](./docs/observability.md), [resilience](./docs/resilience.md), [helpers](./docs/helpers.md), [admin](./docs/admin.md), [testing](./docs/testing.md))
 - [CONTRIBUTING.md](./CONTRIBUTING.md) — build/test/lint, the conformance contract, PR conventions
 - [CHANGELOG.md](./CHANGELOG.md)
 - Per-backend READMEs in the sibling `cache-*` repos
