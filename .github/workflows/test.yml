@@ -1,0 +1,73 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (${{ matrix.module }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - .
+          - contrib/cache-prom
+          - contrib/cache-otel
+          - contrib/codec-msgpack
+          - contrib/codec-zstd
+          - contrib/codec-protobuf
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.24"
+          cache: true
+          cache-dependency-path: ${{ matrix.module }}/go.sum
+      - name: vet
+        working-directory: ${{ matrix.module }}
+        run: go vet ./...
+      - name: gofmt
+        working-directory: ${{ matrix.module }}
+        run: test -z "$(gofmt -l .)"
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.12.0
+          working-directory: ${{ matrix.module }}
+          args: --timeout=5m
+      - name: test (race + coverage)
+        working-directory: ${{ matrix.module }}
+        run: go test -race -count=2 -coverprofile=cover.out ./...
+
+  zero-dep-gate:
+    name: zero-dep gate (core)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: assert core has no non-stdlib deps
+        run: |
+          if grep -E '^\s+[^/[:space:]]+\.[^/[:space:]]+/' go.mod | grep -v 'github.com/ubgo'; then
+            echo "cache core has 3rd-party deps — forbidden (use contrib/)"
+            exit 1
+          fi
+          echo "ok: zero non-stdlib deps in core"
+
+  tidy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.24"
+      - name: assert go.mod is tidy
+        run: |
+          go mod tidy
+          if [ -n "$(git status --porcelain go.mod go.sum 2>/dev/null)" ]; then
+            echo "go.mod/go.sum drifted — run 'go mod tidy'"
+            exit 1
+          fi
