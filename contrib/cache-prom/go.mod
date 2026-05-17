@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/prometheus/client_golang v1.20.5
-	github.com/ubgo/cache v0.0.0
+	github.com/ubgo/cache v0.0.0-20260517103650-a0718472255c
 )
 
 require (
@@ -18,5 +18,3 @@ require (
 	golang.org/x/sys v0.22.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 )
-
-replace github.com/ubgo/cache => ../../

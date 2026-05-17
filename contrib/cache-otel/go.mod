@@ -3,7 +3,7 @@ module github.com/ubgo/cache/contrib/cache-otel
 go 1.24
 
 require (
-	github.com/ubgo/cache v0.0.0
+	github.com/ubgo/cache v0.0.0-20260517103650-a0718472255c
 	go.opentelemetry.io/otel v1.31.0
 	go.opentelemetry.io/otel/metric v1.31.0
 	go.opentelemetry.io/otel/sdk/metric v1.31.0
@@ -17,5 +17,3 @@ require (
 	go.opentelemetry.io/otel/trace v1.31.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
 )
-
-replace github.com/ubgo/cache => ../../
