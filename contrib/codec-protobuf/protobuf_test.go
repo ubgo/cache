@@ -1,3 +1,5 @@
+// protobuf_test.go — tests for the Protocol Buffers codec (contrib/codec-protobuf/protobuf.go).
+
 package codecprotobuf_test
 
 import (

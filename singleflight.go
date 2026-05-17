@@ -1,3 +1,21 @@
+// singleflight.go — per-cache call deduplication backing Remember (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: a zero-dependency reimplementation of the singleflight idea
+// scoped to what Remember needs — flightGroup.Do runs fn once for a key
+// while concurrent callers block and share the result; flightReg maps a
+// Cache instance to its group. The WHY: dedup is per-Cache (not global)
+// because two independent stores may legitimately load the same logical key
+// at once. Concurrency invariant: g.mu guards the map, but fn runs OUTSIDE
+// the lock so a slow loader never blocks unrelated keys; followers read
+// val/err only after the leader's wg.Done() (written-before-read, no race).
+//
+// AI-context: flightReg grows one entry per distinct Cache ever passed and
+// is intentionally never pruned — bounded in practice (apps create few
+// caches). Used only via remember.go's loaderFlight/flightRefresh.
+
 package cache
 
 import "sync"

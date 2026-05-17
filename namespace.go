@@ -1,3 +1,19 @@
+// namespace.go — Namespaced: a key-prefixing Cache view over a shared backend (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements Namespaced(c, prefix) returning an nsCache that
+// transparently prefixes every key (a trailing ":" is appended if absent)
+// so multiple services share one backend without collisions, plus nsIter
+// which strips the prefix back off on iteration. The WHY + key invariant:
+// Flush on a namespaced view scopes to the prefix via DeleteByPrefix rather
+// than wiping the whole backend (an empty prefix falls back to real Flush).
+//
+// AI-context: this is a Cache decorator (embeds Cache, overrides every key-
+// carrying method to prefix in / strip out). Prefixing must stay symmetric
+// — anything that adds the prefix on write must remove it on read-back.
+
 package cache
 
 import (

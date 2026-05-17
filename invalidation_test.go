@@ -1,3 +1,5 @@
+// invalidation_test.go — tests for the in-process invalidation bus (invalidation.go).
+
 package cache_test
 
 import (

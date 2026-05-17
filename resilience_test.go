@@ -1,3 +1,5 @@
+// resilience_test.go — tests for the circuit breaker and retry wrappers (resilience.go).
+
 package cache_test
 
 import (

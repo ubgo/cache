@@ -1,3 +1,5 @@
+// mock_test.go — runs the conformance suite against the in-memory Mock (cachetest/mock.go).
+
 package cachetest_test
 
 import (

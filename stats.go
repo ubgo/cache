@@ -1,3 +1,19 @@
+// stats.go — the adapter-reported metrics snapshot + eviction taxonomy (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares Stats (a point-in-time counter/gauge snapshot every
+// adapter returns from Cache.Stats), EvictionCause + its constants, and the
+// HitRatio helper. The WHY: a uniform stats shape lets the admin endpoint,
+// nsstats and obs layers aggregate across any backend. Invariant: fields an
+// adapter does not track stay at their zero value (never invented); counters
+// are cumulative since process start, Entries/Bytes are instantaneous gauges.
+//
+// AI-context: shared resource — backends populate Stats, the obs/nsstats
+// decorators merge ON TOP of it (they add, never replace), so adding a field
+// here means deciding how every aggregating layer treats it.
+
 package cache
 
 // EvictionCause classifies why an entry left the cache. Adapters report it via

@@ -1,3 +1,5 @@
+// remember_multi_test.go — tests for batch load-through RememberMulti (remember_multi.go).
+
 package cache_test
 
 import (

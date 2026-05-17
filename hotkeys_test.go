@@ -1,3 +1,5 @@
+// hotkeys_test.go — tests for the Space-Saving HotKeyTracker (hotkeys.go).
+
 package cache_test
 
 import (

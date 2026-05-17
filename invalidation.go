@@ -1,3 +1,21 @@
+// invalidation.go — cross-process "these keys changed" fan-out bus (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares the Invalidation interface (Publish/Subscribe), the
+// InvalidateAll broadcast sentinel (empty string = "drop everything"), and
+// NewInProcInvalidation — an in-process bus that is also the reference
+// semantics every distributed implementation must match. The WHY: a
+// tiered/L1 cache subscribes so it drops locally-held copies when another
+// node mutates a key. Invariant: delivery is best-effort — a missed message
+// only means a stale L1 entry until its own short TTL elapses, never
+// correctness loss for a write-through path.
+//
+// AI-context: Subscribe BLOCKS until ctx is done — callers must run it in
+// its own goroutine; the in-proc channel buffer is finite so a slow
+// subscriber backpressures Publish (intentional, not a leak).
+
 package cache
 
 import (

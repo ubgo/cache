@@ -1,3 +1,21 @@
+// remember_multi.go — batch load-through that collapses the cache N+1 (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements RememberMulti and the MultiLoadFn type — serve all
+// cached keys from one GetMulti, load every miss in one fn call, write back
+// with one SetMulti, turning the per-key Remember loop into two round-trips
+// total. The WHY: kills the classic cache N+1. Invariant: values are stored
+// with the PLAIN codec (no SWR/refresh-ahead envelope) so reads must use
+// GetT/RememberMulti, not Remember; duplicate input keys are de-duped so a
+// repeated id is neither loaded nor listed twice; staleness opts are ignored
+// here by design (only WithJitter/WithCodec apply).
+//
+// AI-context: missing keys the loader omits are simply treated as not-found
+// (not cached negatively here). Undecodable cached bytes => treated as a
+// miss and reloaded rather than surfacing a decode error.
+
 package cache
 
 import (

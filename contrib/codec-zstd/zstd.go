@@ -1,3 +1,21 @@
+// zstd.go — size-thresholded zstd compression codec wrapper (package codeczstd, github.com/ubgo/cache/contrib/codec-zstd).
+//
+// Package role: a standalone contrib MODULE (its own go.mod) keeping the
+// klauspost/compress dependency out of the dependency-free core; the next
+// comment block is its canonical package doc (blank-line-separated so this
+// header is not a duplicate package comment).
+//
+// This file: the entire module — Codec wraps an inner cache.Codec and zstd-
+// compresses its output above a byte threshold (small values stay raw,
+// since compressing them is a net loss). The WHY: shrink large cached
+// payloads transparently. PERSISTED wire-format invariant: a 1-byte header
+// (hdrRaw 0x00 / hdrZstd 0x01) prefixes every stored value so Decode is
+// unambiguous and threshold-independent — these constants are FROZEN;
+// changing them makes every previously cached entry undecodable.
+//
+// AI-context: this is a Codec decorator (decorates codec.go's Codec) from a
+// sibling module — the header bytes are the load-bearing edge case here.
+
 // Package codeczstd wraps any cache.Codec with size-thresholded zstd
 // compression. Small values are stored uncompressed (compression would be a
 // net loss); large values are shrunk. A 1-byte header records which path was

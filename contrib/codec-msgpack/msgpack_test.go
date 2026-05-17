@@ -1,3 +1,5 @@
+// msgpack_test.go — tests for the MessagePack codec (contrib/codec-msgpack/msgpack.go).
+
 package codecmsgpack_test
 
 import (

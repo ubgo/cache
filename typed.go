@@ -1,3 +1,20 @@
+// typed.go — Typed[T]: a generics wrapper so a whole module works with T (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements Typed[T] and NewTyped — a thin view that carries a
+// default codec + RememberOpts applied to every Get/Set/Remember/Del so
+// callers stop passing options at every call site. The WHY: ergonomics over
+// the bytes Cache for a single value type. Invariant: Raw() exposes the same
+// underlying keyspace, so a key written via Typed.Set is readable via
+// Raw().Get as a codec payload (decode accordingly) — they are not separate
+// stores.
+//
+// AI-context: pure delegation — every method forwards to the package-level
+// GetT/SetT/Remember with t.opts appended; no independent caching logic
+// lives here, so behavior changes belong in remember.go, not this file.
+
 package cache
 
 import (

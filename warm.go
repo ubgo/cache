@@ -1,3 +1,22 @@
+// warm.go — Warm: bounded-concurrency cache preloading (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares WarmResult and implements Warm[T] — preload a key set
+// into the cache before traffic arrives (startup, post-deploy) so the first
+// users don't all stampede a cold cache. The WHY: avoid a thundering herd on
+// a fresh process. Invariant: loads run with bounded concurrency
+// (concurrency < 1 => 1); a per-key loader failure is REPORTED in
+// WarmResult, not fatal, so one bad key cannot abort the whole warmup;
+// values are stored with SetT semantics (plain codec) — read back with
+// GetT/Remember.
+//
+// AI-context: ctx cancellation is checked with PRIORITY before the
+// slot-acquire select (a bare two-case select picks randomly, so an
+// already-cancelled ctx could leak the first key through) — every remaining
+// key including the first is then marked with ctx.Err().
+
 package cache
 
 import (

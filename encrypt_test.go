@@ -1,3 +1,5 @@
+// encrypt_test.go — tests for the AES-GCM EncryptedCodec (encrypt.go).
+
 package cache_test
 
 import (

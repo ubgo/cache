@@ -1,3 +1,5 @@
+// zstd_test.go — tests for the size-thresholded zstd codec (contrib/codec-zstd/zstd.go).
+
 package codeczstd_test
 
 import (

@@ -1,3 +1,21 @@
+// admin.go — the dependency-free HTTP inspection surface for a cache.Cache (package admin, github.com/ubgo/cache/admin).
+//
+// Package role: admin is a sibling sub-package of github.com/ubgo/cache
+// providing a production debug/ops HTTP surface; it imports only net/http +
+// encoding/json + the core cache module (no third-party deps).
+//
+// This file: the entire package — Options, Mount/Handler, and the stats/
+// key/evict handlers. The WHY: inspect cache health and surgically evict in
+// prod without a backend-specific console. Security invariants: a key value
+// may contain PII so it is omitted unless &value=1 is explicitly passed; the
+// evict route is refused with 403 unless Options.Authorized returns true
+// (nil Authorized => always 403, safe by default).
+//
+// AI-context: the next comment block IS the package doc (separated by a
+// blank line so this file header is not a duplicate package comment). Routes
+// are method-checked and JSON-only; evict uses context.WithoutCancel so a
+// client disconnect cannot abort an in-progress delete.
+
 // Package admin exposes a small, dependency-free HTTP surface for inspecting
 // a cache.Cache in production: stats, single-key inspection, and an
 // auth-gated manual evict. It imports only net/http + encoding/json.

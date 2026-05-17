@@ -1,3 +1,5 @@
+// audit_bulkhead_test.go — tests for the audit-log and bulkhead Cache wrappers (audit.go, bulkhead.go).
+
 package cache_test
 
 import (

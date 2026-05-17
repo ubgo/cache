@@ -1,3 +1,20 @@
+// cachetest.go — the shared cross-backend conformance suite (package cachetest, github.com/ubgo/cache/cachetest).
+//
+// Package role: cachetest is a sibling sub-package of github.com/ubgo/cache
+// that every backend module imports to prove it satisfies the Cache
+// contract. Its package doc lives in mock.go.
+//
+// This file: declares Factory and implements Run(t, factory) — the table of
+// subtests every adapter executes from its own TestConformance. The WHY:
+// the Cache interface's semantics (Get miss => ErrNotFound, ttl<=0 => no
+// expiry, SetNX createonly, atomic Incr/Decr, ErrUnsupported for unservable
+// ops) are enforced HERE, once, instead of re-tested per backend.
+//
+// AI-context: this is the executable form of cache.go's interface contract
+// — adding a guarantee to the Cache docs means adding a subtest here, or
+// backends can silently diverge. Each subtest builds a fresh empty cache
+// via factory so subtests do not share state.
+
 package cachetest
 
 import (

@@ -1,3 +1,5 @@
+// helpers_test.go — tests for Memoize, QueryKey and Once (helpers.go).
+
 package cache_test
 
 import (

@@ -1,3 +1,21 @@
+// protobuf.go — Protocol Buffers cache.Codec implementation (package codecprotobuf, github.com/ubgo/cache/contrib/codec-protobuf).
+//
+// Package role: a standalone contrib MODULE (its own go.mod) keeping the
+// protobuf dependency out of the dependency-free core; the next comment
+// block is its canonical package doc (blank-line-separated so this header
+// is not a duplicate package comment).
+//
+// This file: the entire module — Codec implementing cache.Codec via
+// google.golang.org/protobuf/proto, used through
+// cache.WithCodec(codecprotobuf.Codec{}). The WHY: schema-evolvable,
+// compact, cross-service values. Invariant: the cache.Codec interface
+// accepts any, so the proto.Message requirement can only be enforced at
+// runtime — Encode/Decode assert first and fail loudly with the offending
+// %T (wrapped as cache.ErrSerialization) rather than corrupting the cache.
+//
+// AI-context: implements codec.go's Codec contract from a sibling module;
+// the runtime type-assertion is the load-bearing edge case here.
+
 // Package codecprotobuf provides a Protocol Buffers cache.Codec for
 // proto.Message values — schema-evolvable, compact, and interoperable with
 // other services. Kept out of core so the core stays dependency-free.

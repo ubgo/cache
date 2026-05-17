@@ -1,3 +1,20 @@
+// prom.go — Prometheus exporter for cache.ObsHooks (package cacheprom, github.com/ubgo/cache/contrib/cache-prom).
+//
+// Package role: a standalone contrib MODULE (its own go.mod) so the
+// Prometheus client never enters the dependency-free core; the next comment
+// block is its canonical package doc (blank-line-separated so this header
+// is not a duplicate package comment).
+//
+// This file: the entire module — New(reg, adapter, namespace) registers a
+// counter + histogram and returns a cache.ObsHooks wired to them, consumed
+// via cache.Instrument(backend, hooks). The WHY: ship Prometheus support
+// without the core importing prometheus. Invariant: adapter/namespace
+// become CONST labels so several caches can share one registry; New errors
+// on registration failure (e.g. duplicate) rather than panicking.
+//
+// AI-context: this implements the producer side of obs.go's ObsHooks
+// contract — field names/labels here must track OpEvent in the core.
+
 // Package cacheprom adapts cache.ObsHooks to Prometheus. It keeps the core
 // cache module dependency-free: the Prometheus client lives only here.
 //

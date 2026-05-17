@@ -1,3 +1,22 @@
+// helpers.go — Memoize, QueryKey, and Once: caller-facing convenience helpers (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements Memoize (cache-backed single-flight memoization of
+// a function), QueryKey (deterministic collision-resistant key from a name +
+// arbitrary parts), and Once (run a side-effecting fn at most once per
+// idempotency key, cache its typed result). The WHY: common call-site
+// patterns built on Remember/SetNX. Key invariant: QueryKey length-prefixes
+// each part before hashing so ("a","bc") and ("ab","c") never collide; Once
+// deliberately does NOT cache failures (a transient error must stay
+// retryable — "succeed exactly once", not "attempt exactly once").
+//
+// AI-context: Once's concurrency model — first caller takes a SetNX lease
+// and runs fn; a concurrent caller before the result is stored gets
+// ErrInFlight; a later caller within ttl gets the cached result without
+// running fn. Memoize composes straight onto Remember (remember.go).
+
 package cache
 
 import (

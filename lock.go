@@ -1,3 +1,20 @@
+// lock.go — Locker: a portable distributed lock built on SetNX (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares Locker + ErrLockNotAcquired and implements NewLock
+// using only the Cache SetNX primitive, so the lock works on any adapter
+// with no backend-specific code. The WHY: cross-process mutual exclusion
+// (cron leader election, etc.) without Redis-specific Lua. Safety model /
+// invariant: each Locker holds a random 16-byte token written as the lock
+// value; Refresh/Release re-read and proceed only if the token still
+// matches, so a holder whose lease expired cannot stomp the new owner.
+//
+// AI-context: this is check-then-act, NOT atomic compare-and-delete — it
+// closes the common "released someone else's lock" race but is not a
+// fencing token; keys are prefixed with the const lockPrefix "__lock__:".
+
 package cache
 
 import (

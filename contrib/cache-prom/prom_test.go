@@ -1,3 +1,5 @@
+// prom_test.go — tests for the Prometheus ObsHooks exporter (contrib/cache-prom/prom.go).
+
 package cacheprom_test
 
 import (

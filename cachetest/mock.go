@@ -1,3 +1,19 @@
+// mock.go — Mock: a correct in-memory cache.Cache for consumer unit tests (package cachetest, github.com/ubgo/cache/cachetest).
+//
+// Package role: cachetest is the conformance-suite + test-double sub-package
+// of github.com/ubgo/cache; the next comment block is its canonical package
+// doc (separated by a blank line so this header is not a duplicate package
+// comment).
+//
+// This file: implements Mock — a dependency-free in-memory Cache that
+// passes the conformance suite (so it doubles as the reference
+// implementation) plus FailOn for injecting per-op errors and an
+// overridable clock for deterministic TTL tests. The WHY: downstream code
+// can unit-test cache behavior without standing up Redis/Postgres.
+//
+// AI-context: because Mock runs cachetest.Run itself, any contract change
+// in cache.go must keep Mock conformant — it is the spec made concrete.
+
 // Package cachetest provides the shared conformance suite every cache adapter
 // runs, plus a correct in-memory Mock for consumer unit tests.
 package cachetest

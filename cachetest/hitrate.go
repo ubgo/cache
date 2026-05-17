@@ -1,3 +1,19 @@
+// hitrate.go — Zipfian workload generator for realistic cache benchmarks (package cachetest, github.com/ubgo/cache/cachetest).
+//
+// Package role: cachetest is the conformance-suite + test-double
+// sub-package of github.com/ubgo/cache; its package doc lives in mock.go.
+//
+// This file: declares Zipfian / NewZipfian — a seeded Zipf-distributed key
+// generator (a few very hot keys, a long cold tail) plus hit-rate helpers.
+// The WHY: uniform-random keys make every cache look identical; real
+// traffic is Zipfian, so eviction policies and hit-rate only differentiate
+// under this shape. Determinism invariant: the generator is seeded so a
+// benchmark run is reproducible.
+//
+// AI-context: math/rand's NewZipf requires s > 1 and v >= 1 — the
+// constructor maps the friendly (n, s, seed) args onto that constraint;
+// changing the skew default changes every downstream benchmark's numbers.
+
 package cachetest
 
 import (

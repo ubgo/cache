@@ -1,3 +1,22 @@
+// resilience.go — circuit breaker + retry-with-backoff Cache wrappers (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements NewCircuitBreaker (opens after N consecutive
+// failures, fails fast with ErrCircuitOpen, half-open trial after cooldown)
+// and NewRetry (exponential backoff, ctx-abortable), plus the shared
+// isFailure classifier. The WHY: a failing backend should stop absorbing
+// doomed requests and transient blips should self-heal. Invariant:
+// isFailure treats ErrNotFound / ErrUnsupported / ErrCircuitOpen as NORMAL
+// outcomes — they never trip the breaker or trigger a retry; only genuine
+// backend errors do.
+//
+// AI-context: both are Cache decorators that wrap every method through
+// breakerGuard/retryGuard helpers; the `var _ Cache` assertions guard
+// interface drift. Stacking order matters operationally (retry inside
+// breaker vs outside) but is the caller's composition choice, not enforced.
+
 package cache
 
 import (

@@ -1,3 +1,21 @@
+// otel.go — OpenTelemetry-metrics exporter for cache.ObsHooks (package cacheotel, github.com/ubgo/cache/contrib/cache-otel).
+//
+// Package role: a standalone contrib MODULE (its own go.mod) so the otel
+// SDK never enters the dependency-free core; the next comment block is its
+// canonical package doc (blank-line-separated so this header is not a
+// duplicate package comment).
+//
+// This file: the entire module — New(meter, adapter, namespace) builds an
+// Int64Counter + Float64Histogram and returns a cache.ObsHooks wired to
+// them, consumed via cache.Instrument(backend, hooks). The WHY: ship otel
+// support without the core importing the otel SDK. Invariant: adapter/
+// namespace are emitted as attributes; New returns an error if instrument
+// creation fails rather than panicking.
+//
+// AI-context: producer side of obs.go's ObsHooks contract — instrument
+// names/attributes here must track OpEvent in the core (sibling of the
+// cache-prom exporter, same contract, different backend).
+
 // Package cacheotel adapts cache.ObsHooks to OpenTelemetry metrics. It keeps
 // the core cache module dependency-free: the otel SDK lives only here.
 //

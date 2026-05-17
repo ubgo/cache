@@ -1,3 +1,5 @@
+// otel_test.go — tests for the OpenTelemetry ObsHooks exporter (contrib/cache-otel/otel.go).
+
 package cacheotel_test
 
 import (

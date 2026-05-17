@@ -1,3 +1,21 @@
+// msgpack.go — MessagePack cache.Codec implementation (package codecmsgpack, github.com/ubgo/cache/contrib/codec-msgpack).
+//
+// Package role: a standalone contrib MODULE (its own go.mod) keeping the
+// msgpack dependency out of the dependency-free core; the next comment
+// block is its canonical package doc (blank-line-separated so this header
+// is not a duplicate package comment).
+//
+// This file: the entire module — Codec implementing cache.Codec
+// (Encode/Decode/Name) via vmihailenco/msgpack, used through
+// cache.WithCodec(codecmsgpack.Codec{}). The WHY: more compact + faster
+// than JSON while still cross-language. Invariant: encode/decode failures
+// are wrapped so errors.Is(err, cache.ErrSerialization) holds, and the
+// underlying library error is rendered with %v (message only) so callers
+// stay decoupled from msgpack's internal error types.
+//
+// AI-context: implements codec.go's Codec contract from a sibling module —
+// the wrapped-error / Name() conventions must match the built-in codecs.
+
 // Package codecmsgpack provides a MessagePack cache.Codec: more compact and
 // faster than JSON, still cross-language. Kept out of core so the core stays
 // dependency-free.

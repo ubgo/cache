@@ -1,3 +1,21 @@
+// hotkeys.go — HotKeyTracker: bounded-memory hot-key detection (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements HotKeyTracker (a Cache wrapper) using the
+// Space-Saving algorithm — a fixed pool of `capacity` counters, O(1) per
+// access, memory bounded regardless of keyspace size — plus KeyCount and
+// Top/Reset. The WHY: surface the one key that is 60% of traffic, a hotspot
+// you otherwise cannot see, without per-key unbounded counters. Accuracy
+// invariant: counts are upper-bound estimates (Space-Saving over-estimates
+// by at most the evicted minimum) — ranking of hot keys is reliable, exact
+// counts are NOT; only Get/GetMulti count as reads (TTL passes through).
+//
+// AI-context: this is a Cache decorator; on a full pool the minimum entry
+// is evicted and the new key inherits its count + 1 (lets a newly hot key
+// climb). The compile-time `var _ Cache` assertion guards interface drift.
+
 package cache
 
 import (

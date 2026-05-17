@@ -1,3 +1,20 @@
+// nsstats.go — NamespaceStats: per-namespace hit/miss/set/delete counters (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements NamespaceStats (a Cache wrapper), the NamespaceFn
+// bucketing strategy and DefaultNamespaceFn (split on the first ":"), plus
+// ByNamespace() snapshots. The WHY: a great global hit-rate can hide one
+// broken feature — bucketing per namespace makes the regression visible.
+// Invariant: bucketing adds one map lookup per op; only Get/GetMulti/Set/Del
+// are counted; a Get error counts as a miss only when it is ErrNotFound
+// (real backend errors are neither hit nor miss).
+//
+// AI-context: this is a Cache decorator distinct from obs.go — obs is for
+// exporters/SLOs, nsstats is for per-feature breakdown. The compile-time
+// `var _ Cache` assertion guards interface drift.
+
 package cache
 
 import (

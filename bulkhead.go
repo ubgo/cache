@@ -1,3 +1,21 @@
+// bulkhead.go — NewBulkhead: bounded-concurrency Cache wrapper (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements NewBulkhead which caps in-flight ops at
+// maxConcurrent via a buffered-channel semaphore so one overloaded
+// caller/namespace cannot exhaust backend connections and starve everyone
+// else. The WHY: failure isolation under load. Invariant: acquire is
+// context-aware — a slow backend surfaces as ctx.Err() (or ErrTimeout when
+// ctx has no error) rather than unbounded goroutine growth; maxConcurrent
+// < 1 is clamped to 1.
+//
+// AI-context: this is a Cache decorator wrapping every method through
+// bulkheadGuard/bulkheadDo (acquire-defer-release); the `var _ Cache`
+// assertion guards interface drift. Sibling of resilience.go — composes
+// with breaker/retry; ordering is the caller's choice.
+
 package cache
 
 import (

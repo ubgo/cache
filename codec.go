@@ -1,3 +1,19 @@
+// codec.go — the Codec interface + the three built-in codecs (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares Codec (Encode/Decode/Name) plus JSONCodec (default,
+// portable), GobCodec (Go-only, faster), RawCodec (passthrough for
+// already-serialized []byte/string), and the DefaultCodec var. The WHY:
+// the generics layer (Remember/Typed/GetT) serializes through a Codec so
+// the bytes-level Cache stays type-agnostic. Invariant: every encode/decode
+// failure is wrapped so errors.Is(err, ErrSerialization) holds; RawCodec
+// rejects non-[]byte/string loudly rather than silently corrupting data.
+//
+// AI-context: contrib modules (codec-msgpack/zstd/protobuf) implement this
+// same interface from sibling modules and wrap/replace DefaultCodec usage.
+
 package cache
 
 import (

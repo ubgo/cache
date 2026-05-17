@@ -1,3 +1,20 @@
+// audit.go — NewAuditLog: a mutation audit-trail Cache wrapper (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares AuditEvent/AuditFunc and implements NewAuditLog which
+// wraps a Cache so every state-changing op (Set/SetMulti/SetNX/Expire/Touch/
+// Incr/Decr/Del/DeleteByPrefix/Flush) emits an AuditEvent — a compliance
+// trail of what was written or purged and when. The WHY: regulated
+// environments need a tamper record of cache mutations. Privacy note /
+// contrast with obs.go: audit events DELIBERATELY include RAW keys (that is
+// their purpose) — route them to a TRUSTED sink, unlike the hashed obs hooks.
+//
+// AI-context: this is a Cache decorator; reads are intentionally NOT audited
+// (only mutations). AuditFunc must not block — it runs inline on the op
+// path. The `var _ Cache` assertion guards interface drift.
+
 package cache
 
 import (

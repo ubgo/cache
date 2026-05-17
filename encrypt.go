@@ -1,3 +1,20 @@
+// encrypt.go — EncryptedCodec: AES-GCM authenticated-encryption codec wrapper (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares KeyProvider, StaticKey, and EncryptedCodec which
+// wraps an inner Codec with AES-GCM so PII/secrets cached in a shared or
+// managed backend are not a breach if the store is dumped. The WHY: caching
+// sensitive values safely without a backend-specific encryption feature.
+// Wire-format invariant: stored layout is [12-byte random nonce][GCM
+// ciphertext+tag]; a tampered or wrong-key payload fails Open and surfaces
+// as ErrSerialization (never silent garbage).
+//
+// AI-context: this is a Codec decorator (decorates codec.go's Codec). Key
+// rotation is by re-warming the cache, not in place — decryption always
+// uses the current key the provider returns.
+
 package cache
 
 import (

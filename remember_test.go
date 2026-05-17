@@ -1,3 +1,5 @@
+// remember_test.go — tests for Remember, GetT/SetT and the caching-pattern options (remember.go).
+
 package cache_test
 
 import (

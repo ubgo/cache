@@ -1,3 +1,19 @@
+// errors.go — the cross-backend sentinel error set (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares every sentinel error (ErrNotFound, ErrUnsupported,
+// ErrSerialization, ErrTimeout, ErrCircuitOpen, ErrTooLarge, ErrKeyTooLong,
+// ErrClosed). The WHY: adapters in sibling modules must return THESE values
+// (wrapping with %w is allowed) so callers can errors.Is() against them
+// regardless of which backend is wired in. The invariant ErrNotFound on a
+// miss (never (nil, nil)) is the single most relied-on contract here.
+//
+// AI-context: these are shared resources — every backend module and every
+// decorator reads/returns them. Renaming or repurposing one is a breaking
+// change across the whole family; add new ones, don't mutate existing.
+
 package cache
 
 import "errors"

@@ -1,3 +1,5 @@
+// nsstats_test.go — tests for per-namespace NamespaceStats (nsstats.go).
+
 package cache_test
 
 import (

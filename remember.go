@@ -1,3 +1,21 @@
+// remember.go — the typed load-through workhorse + all caching-pattern options (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: implements Remember (cache-or-single-flight-load-and-store)
+// plus GetT/SetT, every RememberOpt (refresh-ahead, stale-while-revalidate,
+// stale-if-error, negative caching, jitter, codec), and the internal
+// rememberCfg / envelope. The WHY: composes all the production caching
+// patterns over the bytes Cache. Wire-format invariant: Remember stores a
+// JSON-encoded `envelope{Data,Born,Soft,Missing}` so metadata survives any
+// value codec; GetT/SetT use the PLAIN codec (no envelope) — pair reads and
+// writes with the matching function or the envelope won't decode.
+//
+// AI-context: Remember dedups loads via singleflight.go's loaderFlight; a
+// stored entry's hard backend TTL = soft TTL + widest stale window so the
+// stale-* options can still read an expired-but-present value.
+
 package cache
 
 import (

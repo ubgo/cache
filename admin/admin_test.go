@@ -1,3 +1,5 @@
+// admin_test.go — tests for the HTTP cache-inspection admin surface (admin/admin.go).
+
 package admin_test
 
 import (

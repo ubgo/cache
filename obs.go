@@ -1,3 +1,21 @@
+// obs.go — Instrument: zero-dependency observability seam over a Cache (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root bytes-level cache contract of the
+// ubgo/cache family; see doc.go for the package overview.
+//
+// This file: declares ObsHooks/OpEvent, the KeyHash helper, and Instrument
+// which wraps a Cache so every op reports through callbacks and updates
+// internal counters. The WHY: the core never imports OpenTelemetry or
+// Prometheus — contrib/cache-otel and contrib/cache-prom implement the
+// hooks. Privacy invariant: events carry KeyHash (first 8 bytes of
+// sha256(key), hex) — raw keys may contain PII and are NEVER emitted here.
+//
+// AI-context: this is a Cache decorator. By design only Get/Set/Del emit
+// OpEvents (dominant traffic + the hit/miss outcome that matters for SLOs);
+// other ops pass straight through to keep the hot path cheap. Stats() MERGES
+// the wrapper's observed counters on top of the adapter's snapshot (each
+// layer counts only ops flowing through it, so no double counting).
+
 package cache
 
 import (

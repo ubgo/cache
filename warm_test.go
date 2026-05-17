@@ -1,3 +1,5 @@
+// warm_test.go — tests for bounded-concurrency cache preloading Warm (warm.go).
+
 package cache_test
 
 import (

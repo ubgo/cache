@@ -1,3 +1,20 @@
+// cache.go — the bytes-level Cache interface every backend must implement (package cache, github.com/ubgo/cache).
+//
+// Package role: cache is the root contract + ergonomics layer of the
+// ubgo/cache family; backends (cache-mem/redis/pg/tiered) and contrib
+// codecs/exporters orbit it. Canonical package overview lives in doc.go.
+//
+// This file: declares Cache (the untyped bytes API), plus the Item,
+// IterateOpts and Iterator support types. The WHY of untyped-bytes: a
+// single interface covers every adapter; typed generics live in the
+// remember/typed layer on top. The Semantics comment on Cache is the
+// authoritative contract enforced by cachetest.Run — adapters MUST honor
+// it (Get miss => (nil, ErrNotFound), ttl<=0 => no expiry, etc.).
+//
+// AI-context: this is an interface-only file; changing a method signature
+// here ripples to every backend module and every decorator in this package
+// (obs, resilience, bulkhead, audit, hotkeys, nsstats, namespace).
+
 package cache
 
 import (
