@@ -4,6 +4,10 @@
 
 It is a **separate Go module** at `contrib/cache-otel` inside the `ubgo/cache` repo. The core stays dependency-free; the OTel SDK is pulled in only if you import this.
 
+## Documentation
+
+A full per-feature cookbook (every exported symbol, use cases, runnable snippets, the created instruments, attributes, and result classification) lives in [`docs/README.md`](./docs/README.md) → [`docs/features.md`](./docs/features.md).
+
 ## Why cache-otel
 
 - **Dependency isolation.** `github.com/ubgo/cache` has no OpenTelemetry dependency. Importing it is opt-in.

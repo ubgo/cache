@@ -4,6 +4,10 @@
 
 It is a **separate Go module** at `contrib/codec-protobuf` inside the `ubgo/cache` repo. The core stays dependency-free; the protobuf runtime is only pulled in when you import this.
 
+## Documentation
+
+A full per-feature cookbook (every exported symbol, use cases, runnable snippets, the proto.Message requirement, and the schema-evolution use case) lives in [`docs/README.md`](./docs/README.md) → [`docs/features.md`](./docs/features.md).
+
 ## Why codec-protobuf
 
 - **Schema evolution.** Add/deprecate fields without breaking old cached entries — Protobuf's whole point.

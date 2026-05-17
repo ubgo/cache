@@ -4,6 +4,10 @@
 
 It is a **separate Go module** that lives in `contrib/cache-prom` inside the `ubgo/cache` repo. The core stays dependency-free; the Prometheus client is only pulled in if you import this.
 
+## Documentation
+
+A full per-feature cookbook (every exported symbol, use cases, runnable snippets, the registered metrics, and result classification) lives in [`docs/README.md`](./docs/README.md) → [`docs/features.md`](./docs/features.md).
+
 ## Why cache-prom
 
 - **Dependency isolation.** `github.com/ubgo/cache` has no Prometheus dependency. Apps that don't want it don't pay for it.

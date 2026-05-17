@@ -4,6 +4,10 @@
 
 It is a **separate Go module** at `contrib/codec-msgpack` inside the `ubgo/cache` repo. The core stays dependency-free; the msgpack library is only pulled in when you import this.
 
+## Documentation
+
+A full per-feature cookbook (every exported symbol, use cases, runnable snippets, error wrapping, and JSON/Gob tradeoffs) lives in [`docs/README.md`](./docs/README.md) → [`docs/features.md`](./docs/features.md).
+
 ## Why codec-msgpack
 
 - **Smaller payloads.** MessagePack's binary encoding is materially smaller than JSON for typical structs — less Redis memory, less network.

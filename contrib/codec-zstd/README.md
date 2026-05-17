@@ -4,6 +4,10 @@
 
 It is a **separate Go module** at `contrib/codec-zstd` inside the `ubgo/cache` repo. The core stays dependency-free; `klauspost/compress` is only pulled in when you import this.
 
+## Documentation
+
+A full per-feature cookbook (every exported symbol, use cases, runnable snippets, the 0x00/0x01 framing, threshold rationale, and compose-with-encrypt ordering) lives in [`docs/README.md`](./docs/README.md) → [`docs/features.md`](./docs/features.md).
+
 ## Why codec-zstd
 
 - **Smaller Redis footprint / less network** for large cached values (HTML, JSON blobs, rendered pages).
