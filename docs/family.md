@@ -63,6 +63,4 @@ behavior your code depends on.
 
 ## Versioning
 
-Untagged today — consume with `@latest` (each push is a fresh pseudo-version,
-so you always get the newest `main`). When stable releases are cut they follow
-SemVer with synchronized majors across the family.
+Released at **`v0.1.0`**, synchronized across every module (contrib modules carry path tags like `contrib/codec-zstd/v0.1.0`). Pin it: `go get github.com/ubgo/cache@v0.1.0` (and likewise for each adapter / `github.com/ubgo/cache/contrib/<name>@v0.1.0`). `@latest` also works and tracks the newest tag. SemVer is followed; majors bump together across the family so adapters never mismatch the core.
