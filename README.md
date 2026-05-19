@@ -1,6 +1,8 @@
 # ubgo/cache
 
-![coverage](https://img.shields.io/badge/coverage-99%25-brightgreen)
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/ubgo/cache.svg)](https://pkg.go.dev/github.com/ubgo/cache) [![Go Report Card](https://goreportcard.com/badge/github.com/ubgo/cache)](https://goreportcard.com/report/github.com/ubgo/cache) [![test](https://github.com/ubgo/cache/actions/workflows/test.yml/badge.svg)](https://github.com/ubgo/cache/actions/workflows/test.yml) [![lint](https://github.com/ubgo/cache/actions/workflows/lint.yml/badge.svg)](https://github.com/ubgo/cache/actions/workflows/lint.yml) ![coverage](https://img.shields.io/badge/coverage-96%25-brightgreen) [![tag](https://img.shields.io/github/v/tag/ubgo/cache?sort=semver)](https://github.com/ubgo/cache/tags) [![license](https://img.shields.io/badge/license-source--available-blue)](./LICENSE) ![Go](https://img.shields.io/badge/go-1.24-00ADD8?logo=go)
+
 
 **A production-grade caching library for Go: one `Cache` interface for in-memory, Redis, Postgres and distributed/tiered backends, with typed generics, a single-flight `Remember` (TTL, refresh-ahead, stale-while-revalidate, stale-if-error, negative caching, jitter), LRU/W-TinyLFU-capable adapters, a portable distributed lock, and a shared conformance suite.**
 
