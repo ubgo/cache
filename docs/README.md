@@ -4,6 +4,8 @@ Every exported feature of `github.com/ubgo/cache` (and its `cachetest` / `admin`
 sub-packages), documented one-by-one: what it is, real-world use cases, and a
 runnable Go snippet.
 
+**New here?** Read [the family overview](./family.md) to pick a backend, or [the migration guide](./migration.md) if you're coming from Ristretto / golang-lru / go-cache.
+
 ## Start here
 
 1. Pick a backend module (`cache-mem`, `cache-redis`, `cache-pg`, `cache-tiered`, …). It implements [`cache.Cache`](./core-operations.md).
