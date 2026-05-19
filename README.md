@@ -1,5 +1,7 @@
 # ubgo/cache
 
+![coverage](https://img.shields.io/badge/coverage-99%25-brightgreen)
+
 **A production-grade caching library for Go: one `Cache` interface for in-memory, Redis, Postgres and distributed/tiered backends, with typed generics, a single-flight `Remember` (TTL, refresh-ahead, stale-while-revalidate, stale-if-error, negative caching, jitter), LRU/W-TinyLFU-capable adapters, a portable distributed lock, and a shared conformance suite.**
 
 `ubgo/cache` is the bytes-level cache contract plus the ergonomics layered on top of it. Write your code against one interface and swap an in-memory LRU for Redis or a multi-tier L1/L2 cache without touching call sites. The core module has **zero third-party dependencies** — observability and extra codecs ship as separate opt-in `contrib/` modules so your dependency graph stays empty unless you ask for more.

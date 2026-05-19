@@ -43,6 +43,25 @@ jobs:
       - name: test (race + coverage)
         working-directory: ${{ matrix.module }}
         run: go test -race -count=2 -coverprofile=cover.out ./...
+      - name: coverage floor gate
+        working-directory: ${{ matrix.module }}
+        run: |
+          go test -coverprofile=cover.out -covermode=atomic ./...
+          TOTAL=$(go tool cover -func=cover.out | tail -1 | grep -oE '[0-9.]+' | tail -1)
+          case "${{ matrix.module }}" in
+            .) FLOOR=93 ;;
+            contrib/cache-prom) FLOOR=89 ;;
+            contrib/cache-otel) FLOOR=91 ;;
+            contrib/codec-msgpack) FLOOR=97 ;;
+            contrib/codec-protobuf) FLOOR=89 ;;
+            contrib/codec-zstd) FLOOR=97 ;;
+            *) FLOOR=0 ;;
+          esac
+          echo "coverage: $TOTAL% (floor: $FLOOR%)"
+          if awk "BEGIN{exit !($TOTAL < $FLOOR)}"; then
+            echo "coverage $TOTAL% is below floor $FLOOR%"
+            exit 1
+          fi
 
   zero-dep-gate:
     name: zero-dep gate (core)
