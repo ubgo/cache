@@ -2,10 +2,7 @@ module github.com/ubgo/cache/contrib/cache-prom
 
 go 1.24
 
-require (
-	github.com/prometheus/client_golang v1.20.5
-	github.com/ubgo/cache v0.0.0-20260517103650-a0718472255c
-)
+require github.com/prometheus/client_golang v1.20.5
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -15,6 +12,7 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
+	github.com/ubgo/cache v0.1.0
 	golang.org/x/sys v0.22.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 )
