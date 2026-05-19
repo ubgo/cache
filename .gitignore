@@ -10,7 +10,10 @@ bin/
 *.out
 cover.out
 cover.html
-coverage.*
+coverage.out
+coverage.html
+coverage.xml
+coverage.txt
 
 # Editor / IDE
 .idea/
