@@ -36,3 +36,4 @@ build/
 # AI session context (local only)
 CLAUDE.md
 TECHNICAL.md
+.claude/settings.local.json
