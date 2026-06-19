@@ -18,6 +18,9 @@ type User struct{ ID int; Name string }
 
 ---
 
+> [!IMPORTANT]
+> **Cache serializable data, not live objects.** Every `Typed[T]` operation runs `T` through a codec: encode on `Set`, decode on every `Get`. So you never get the *same* object back — you get a freshly decoded copy. That is fine for plain data (`User{ID, Name}`, a config struct, a `[]Result`), but it silently breaks values whose usefulness depends on staying live: anything with unexported fields or bindings that do not round-trip — a `*regexp.Regexp`, `*http.Client`, an open connection, a `func`, a `chan`, or an **ORM entity** like an ent `*ent.User`. An ent entity carries an unexported client handle; after a cache round-trip that handle is nil, so the decoded copy reads its scalar fields fine but panics the moment anyone calls `.QueryEdges()` / `.Update()` on it. The trap is that it looks like it works (scalar reads pass) until a future caller relies on the liveness. **Cache a flat DTO with just the fields you need, not the raw entity** — then there is no liveness to lose. If you genuinely need to hold a live object by reference with zero serialization, a cache is the wrong tool: use a `sync.Map` or a small typed helper instead.
+
 ### `NewTyped[T](c Cache, opts ...RememberOpt) *Typed[T]`
 
 One-line: wrap a byte cache into a type-safe handle; `opts` apply to every
