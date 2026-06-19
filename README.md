@@ -38,6 +38,8 @@ Most Go caching is either a bare `map[string][]byte` (no TTL, no single-flight, 
 | [`cache-cluster`](https://github.com/ubgo/cache-cluster) | client-side sharding across nodes |
 | [`cache-cli`](https://github.com/ubgo/cache-cli) | inspector binary |
 
+**Companion** (not a `cache.Cache` backend): [`cache-obj`](https://github.com/ubgo/cache-obj) — an in-process cache for *live objects* that must not be serialized (compiled `*regexp.Regexp`, `*http.Client`, connections, ORM entities you traverse). Use it when you need the *same instance* back, not its serialized data.
+
 **contrib/** (this repo, separate modules so the core stays dependency-free)
 
 | Module | Purpose |

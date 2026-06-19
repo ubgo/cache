@@ -22,6 +22,7 @@ graph TD
   CORE --> PROM["contrib/cache-prom<br/>Prometheus"]
   CORE --> OTEL["contrib/cache-otel<br/>OpenTelemetry"]
   CORE --> CODECS["contrib/codec-msgpack<br/>contrib/codec-zstd<br/>contrib/codec-protobuf"]
+  CORE -.->|companion, not a backend| OBJ["cache-obj<br/>in-process live-object cache<br/>(no serialization)"]
 ```
 
 ## Modules
@@ -36,6 +37,7 @@ graph TD
 | **cache-tiered** | `github.com/ubgo/cache-tiered` | L1 (mem) in front of L2/L3 (Redis/PG) with read-promotion and cross-process invalidation. |
 | **cache-cluster** | `github.com/ubgo/cache-cluster` | Peer-aware distribution: consistent-hash ring + single-flight HTTP peer fill (groupcache-style). |
 | **cache-cli** | `github.com/ubgo/cache-cli` | A shell/CI tool to inspect a live Redis-backed cache. |
+| **cache-obj** | `github.com/ubgo/cache-obj` | An in-process cache for **live objects** that must not be serialized (compiled `*regexp.Regexp`, `*http.Client`, connections, ORM entities you traverse). A companion abstraction — typed `Cache[T]`, NOT a `cache.Cache` backend. Use it when you need the *same instance* back, not its serialized data. |
 | **contrib/cache-prom**, **contrib/cache-otel** | `github.com/ubgo/cache/contrib/...` | Export hit/miss/latency to Prometheus or OpenTelemetry via `cache.Instrument`. |
 | **contrib/codec-msgpack**, **codec-zstd**, **codec-protobuf** | `github.com/ubgo/cache/contrib/...` | Swap the value codec (compact, compressed, or schema-evolved) via `cache.WithCodec`. |
 
