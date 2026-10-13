@@ -6,6 +6,10 @@ minor bumps may break — see PLAN §13).
 
 ## [Unreleased]
 
+### Changed
+
+- Licensed under Apache-2.0. The previous LICENSE file was a source-available text copied from another project by mistake.
+
 ### Added
 
 - Core `Cache` interface (bytes-level): Get/GetMulti/Has/TTL, Set/SetMulti/

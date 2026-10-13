@@ -6,6 +6,10 @@ together with the parent `github.com/ubgo/cache` module.
 
 ## [Unreleased]
 
+### Changed
+
+- Licensed under Apache-2.0. The previous LICENSE file was a source-available text copied from another project by mistake.
+
 ### Added
 
 - Initial release. See README for usage.
