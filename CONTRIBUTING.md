@@ -23,7 +23,7 @@ task check        # fmt:check + vet + race tests (the pre-PR gate)
 task bench        # conformance benchmarks against the mock
 ```
 
-CI runs the same commands. A PR must be `gofmt`-clean, build, pass `go test -race ./...`, and produce **0** `golangci-lint` issues (`errcheck`, `govet`, `staticcheck`, `revive`, `gocritic`, `misspell`, `unused`, `ineffassign`, `unconvert`). The only configured exclusion is the unused `ctx` parameter, which interface compliance forces adapters to keep.
+The same commands are in the CI workflows, which run on manual dispatch only, so the local `task check` is the gate. A PR must be `gofmt`-clean, build, pass `go test -race ./...`, and produce **0** `golangci-lint` issues (`errcheck`, `govet`, `staticcheck`, `revive`, `gocritic`, `misspell`, `unused`, `ineffassign`, `unconvert`). The only configured exclusion is the unused `ctx` parameter, which interface compliance forces adapters to keep.
 
 ## The conformance-suite contract
 
